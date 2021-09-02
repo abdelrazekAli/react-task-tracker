@@ -22,10 +22,4 @@ Header.propTypes = {
   title: PropTypes.string,
 };
 
-// Css in JS
-// const headingStyle = {
-//   display: "flex",
-//   justifyContent: "center",
-// };
-
 export default Header;

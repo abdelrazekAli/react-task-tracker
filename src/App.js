@@ -20,7 +20,7 @@ function App() {
     },
     {
       id: 3,
-      text: "Food shoping",
+      text: "Food shopping",
       day: "Feb 6th at 8:00pm",
       reminder: false,
     },
