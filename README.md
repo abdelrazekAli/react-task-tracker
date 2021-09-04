@@ -4,4 +4,4 @@
 
 ### App Demo
 
-For preview: https://abdelrazek-task-tracker.herokuapp.com/
+https://abdelrazek-task-tracker.herokuapp.com/
