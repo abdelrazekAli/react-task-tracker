@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import About from "./components/About";
 import AddTask from "./components/AddTask";
+import EditTask from "./components/EditTask";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Tasks from "./components/Tasks";
@@ -40,25 +41,67 @@ function App() {
   };
 
   const [showAddTask, setShowAddTask] = useState(false);
+  const [showEditTask, setShowEditTask] = useState(false);
+
+  // Edit Task
+  const [editValues, setEditValues] = useState({
+    text: "",
+    day: "",
+    reminder: false,
+  });
+
+  const onEditTask = (task) => {
+    setShowEditTask(!showEditTask);
+    setShowAddTask(false);
+    setEditValues(task);
+  };
+
+  let { day, text, reminder, id } = editValues;
+
+  const editTask = (task) => {
+    let updatedTasks = tasks.map((ele) =>
+      ele.id === task.id ? { ...task } : ele
+    );
+    setTasks(updatedTasks);
+    setToLocal(updatedTasks);
+    setShowEditTask(false);
+  };
+
+  // Toogle Button
+  const toggleButton = () => {
+    if (showEditTask || showAddTask) {
+      setShowEditTask(false);
+      setShowAddTask(false);
+    } else {
+      setShowAddTask(true);
+    }
+  };
 
   return (
     <Router>
       <div className="container">
-        <Header
-          onClick={() => setShowAddTask(!showAddTask)}
-          showAdd={showAddTask}
-        />
+        <Header onClick={toggleButton} showAdd={showAddTask || showEditTask} />
         <Route
           path="/"
           exact
           render={(props) => (
             <>
               {showAddTask && <AddTask onAdd={addTask} />}
+              {showEditTask && (
+                <EditTask
+                  textValue={text}
+                  dayValue={day}
+                  reminderValue={reminder}
+                  id={id}
+                  onEdit={editTask}
+                />
+              )}
               {tasks.length > 0 ? (
                 <Tasks
                   tasks={tasks}
                   onDelete={deleteTask}
                   onToggle={toggleReminder}
+                  onEdit={onEditTask}
                 />
               ) : (
                 "There is no tasks"

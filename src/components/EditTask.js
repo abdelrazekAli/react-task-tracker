@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-const AddTask = ({ onAdd }) => {
-  const [text, setText] = useState("");
-  const [day, setDay] = useState("");
-  const [reminder, setReminder] = useState(false);
+const EditTask = ({ textValue, dayValue, reminderValue, id, onEdit }) => {
+  const [text, setText] = useState(textValue);
+  const [day, setDay] = useState(dayValue);
+  const [reminder, setReminder] = useState(reminderValue);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -11,10 +11,7 @@ const AddTask = ({ onAdd }) => {
       alert("Please add a task");
       return;
     }
-    onAdd({ text, day, reminder });
-    setText("");
-    setDay("");
-    setReminder(false);
+    onEdit({ id, text, day, reminder });
   };
 
   return (
@@ -23,32 +20,38 @@ const AddTask = ({ onAdd }) => {
         <label>Task Name</label>
         <input
           type="text"
-          placeholder="Add task"
+          placeholder="Edit task"
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
         />
       </div>
       <div className="form-control">
         <label>Date &amp; Time</label>
         <input
           type="text"
-          placeholder="Add date &amp; time"
+          placeholder="Edit date &amp; time"
           value={day}
-          onChange={(e) => setDay(e.target.value)}
+          onChange={(e) => {
+            setDay(e.target.value);
+          }}
         />
       </div>
       <div className="form-control form-control-check">
-        <label>Set reminder</label>
+        <label>Edit reminder</label>
         <input
           type="checkbox"
           checked={reminder}
           value={reminder}
-          onChange={(e) => setReminder(e.currentTarget.checked)}
+          onChange={(e) => {
+            setReminder(e.currentTarget.checked);
+          }}
         />
       </div>
-      <input type="submit" value="Save task" className="btn btn-block" />
+      <input type="submit" value="Edit task" className="btn btn-block" />
     </form>
   );
 };
 
-export default AddTask;
+export default EditTask;
