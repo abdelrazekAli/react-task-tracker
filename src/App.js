@@ -7,49 +7,39 @@ import Header from "./components/Header";
 import Tasks from "./components/Tasks";
 
 function App() {
-  const [showAddTask, setShowAddTask] = useState(false);
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      text: "Manager Appointment",
-      day: "Feb 5th at 9:00am",
-      reminder: true,
-    },
-    {
-      id: 2,
-      text: "Meeting at college",
-      day: "Feb 6th at 11:30am",
-      reminder: true,
-    },
-    {
-      id: 3,
-      text: "Food shopping",
-      day: "Feb 6th at 8:00pm",
-      reminder: false,
-    },
-  ]);
+  // Local storage
+  let getTasks = localStorage.getItem("tasks");
+  const setToLocal = (tasks) => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  };
+
+  const [tasks, setTasks] = useState(getTasks ? JSON.parse(getTasks) : []);
 
   // Add Task
   const addTask = (task) => {
     const id = Math.floor(Math.random() * 10000) + 1;
     const newTask = { id, ...task };
-    console.log(newTask);
     setTasks([...tasks, newTask]);
+    setToLocal([...tasks, newTask]);
   };
 
   // Delete Task
   const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+    let filterTasks = tasks.filter((task) => task.id !== id);
+    setTasks(filterTasks);
+    setToLocal(filterTasks);
   };
 
   // Toggle reminder
   const toggleReminder = (id) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, reminder: !task.reminder } : task
-      )
+    let updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, reminder: !task.reminder } : task
     );
+    setTasks(updatedTasks);
+    setToLocal(updatedTasks);
   };
+
+  const [showAddTask, setShowAddTask] = useState(false);
 
   return (
     <Router>
